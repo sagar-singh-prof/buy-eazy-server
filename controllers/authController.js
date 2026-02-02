@@ -5,7 +5,9 @@ export async function registerController(req, res) {
   const { firstName, lastName, email, password } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
+    return res
+      .status(400)
+      .json({ status: false, message: "All fields are required" });
   }
 
   try {
@@ -15,17 +17,20 @@ export async function registerController(req, res) {
       email,
       password,
     });
-    return res.status(201).json({ message: "success" });
+    return res.status(201).json({ status: true, message: "success" });
   } catch (error) {
     console.log(error, "inside db catch");
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ status: false, message: error.message });
   }
 }
 
 export async function loginController(req, res) {
   const { email, password } = req.body;
+  console.log(req.body);
   if (!email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
+    return res
+      .status(400)
+      .json({ status: false, message: "All fields are required" });
   }
 
   try {
@@ -34,7 +39,6 @@ export async function loginController(req, res) {
       return res
         .status(400)
         .json({ status: false, message: "invalid username or password" });
-    console.log(user);
     if (user.password === password)
       return res.status(200).json({ status: true, message: "login success" });
     else
@@ -43,5 +47,27 @@ export async function loginController(req, res) {
         .json({ status: false, message: "invalid username or password" });
   } catch (error) {
     return res.status(400).json({ status: false, message: error.message });
+  }
+}
+
+export async function userController(req, res) {
+  const { email } = req.params;
+  if (!email)
+    return res
+      .status(400)
+      .json({ status: false, message: "user id not present" });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).json({ status: false, message: "No user found" });
+
+    return res.status(200).json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
   }
 }
