@@ -4,6 +4,7 @@ import {
   registerController,
   userController
 } from "../controllers/authController.js";
+import { verifyJWT } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -11,6 +12,6 @@ router.post("/login", loginController);
 
 router.post("/register", registerController);
 
-router.get("/user/:email", userController)
+router.get("/user/:email", verifyJWT, userController)
 
 export default router;

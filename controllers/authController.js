@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { generateToken } from "../utils/generateToken.js";
 
 export async function registerController(req, res) {
   console.log(req.body);
@@ -39,9 +40,12 @@ export async function loginController(req, res) {
       return res
         .status(400)
         .json({ status: false, message: "invalid username or password" });
-    if (user.password === password)
-      return res.status(200).json({ status: true, message: "login success" });
-    else
+    if (user.password === password) {
+      const jwt = generateToken(email);
+      return res
+        .status(200)
+        .json({ status: true, message: "login success", jwt });
+    } else
       return res
         .status(400)
         .json({ status: false, message: "invalid username or password" });
