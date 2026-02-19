@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 const secret="122506"
 
 export const verifyJWT = (req, res, next) => {
+
+
   try {
     const authHeader = req.headers.authorization;
 

@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    pid: {
-      type: String,
-      required: true,
-    },
+    
     name: {
       type: String,
       required: true,
@@ -26,7 +23,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image_url: {
+    imageUrl: {
       type: String,
       required: true,
     },

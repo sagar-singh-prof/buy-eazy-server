@@ -8,6 +8,8 @@ import { verifyJWT } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
+
+
 router.post("/login", loginController);
 
 router.post("/register", registerController);
